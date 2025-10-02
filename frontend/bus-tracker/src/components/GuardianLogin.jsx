@@ -1,45 +1,49 @@
-// src/components/GuardianLogin.jsx
-import { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-export default function GuardianLogin() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+const ParentLogin = () => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      alert("Login successful!");
-      // TODO: Redirect to guardian dashboard
-    } catch (err) {
-      setError(err.message);
-    }
+    // Mock authentication - assume success
+    alert(`Logged in as Parent with username: ${username}`);
+    // Navigate to parent dashboard
+    navigate('/parent');
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>Guardian Login</h2>
-      <form onSubmit={handleLogin}>
-        <input 
-          type="email" 
-          placeholder="Email" 
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <br />
-        <input 
-          type="password" 
-          placeholder="Password" 
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <br />
-        <button type="submit">Login</button>
-      </form>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+    <div className="login-page">
+      <div className="login-container">
+        <h1>Parent Login</h1>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="username">Username:</label>
+            <input
+              type="text"
+              id="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="password">Password:</label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <button type="submit" className="btn">Login</button>
+        </form>
+      </div>
     </div>
   );
-}
+};
+
+export default ParentLogin;
