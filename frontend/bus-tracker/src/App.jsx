@@ -1,20 +1,37 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import LandingPage from "./components/LandingPage";
-import GuardianLogin from "./components/GuardianLogin"; {/*
-import StudentLogin from "./components/StudentLogin";
-import StaffLogin from "./components/StaffLogin"; */}
+import { Routes, Route, Link } from "react-router-dom"
 
-function App() {
+function Landing() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/guardian-login" element={<GuardianLogin />} /> {/*
-        <Route path="/student-login" element={<StudentLogin />} />
-        <Route path="/staff-login" element={<StaffLogin />} /> */}
-      </Routes>
-    </Router>
-  );
+    <div>
+      <h1>Bus Tracker</h1>
+      <nav>
+        <Link to="/guardian">Guardian</Link> |{" "}
+        <Link to="/student">Student</Link> |{" "}
+        <Link to="/staff">Staff</Link>
+      </nav>
+    </div>
+  )
 }
 
-export default App;
+function GuardianLogin() {
+  return <h2>Guardian Login Page</h2>
+}
+
+function StudentLogin() {
+  return <h2>Student Login Page</h2>
+}
+
+function StaffLogin() {
+  return <h2>Staff Login Page</h2>
+}
+
+export default function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<Landing />} />
+      <Route path="/guardian" element={<GuardianLogin />} />
+      <Route path="/student" element={<StudentLogin />} />
+      <Route path="/staff" element={<StaffLogin />} />
+    </Routes>
+  )
+}
