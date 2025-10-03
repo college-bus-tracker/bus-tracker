@@ -10,7 +10,7 @@ const StudentDashboard = () => {
       case 'tracking':
         return (
           <section id="tracking" className="active">
-            <h1>My Bus Live Location</h1>
+            <h1>My Bus Live</h1>
             <Map />
           </section>
         );
