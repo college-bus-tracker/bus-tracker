@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Map from './Map';
+import { GridBackground } from './Backgrounds';
 
 const StudentDashboard = () => {
   const [activeSection, setActiveSection] = useState('tracking');
@@ -10,7 +11,7 @@ const StudentDashboard = () => {
       case 'tracking':
         return (
           <section id="tracking" className="active">
-            <h1>My Bus Live</h1>
+            <h1>My Bus Location</h1>
             <Map />
           </section>
         );
@@ -36,7 +37,7 @@ const StudentDashboard = () => {
   };
 
   return (
-    <div className="dashboard">
+    <GridBackground className="dashboard">
       <aside className="sidebar">
         <h2>Student Dashboard</h2>
         <ul>
@@ -50,7 +51,7 @@ const StudentDashboard = () => {
       <main className="main-content">
         {renderSection()}
       </main>
-    </div>
+    </GridBackground>
   );
 };
 

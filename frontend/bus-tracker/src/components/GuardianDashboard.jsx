@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Map from './Map';
+import { GridBackground } from './Backgrounds';
 
 const ParentDashboard = () => {
   const [activeSection, setActiveSection] = useState('tracking');
@@ -37,7 +38,7 @@ const ParentDashboard = () => {
   };
 
   return (
-    <div className="dashboard">
+    <GridBackground className="dashboard">
       <aside className="sidebar">
         <h2>Parent Dashboard</h2>
         <ul>
@@ -51,7 +52,7 @@ const ParentDashboard = () => {
       <main className="main-content">
         {renderSection()}
       </main>
-    </div>
+    </GridBackground>
   );
 };
 
