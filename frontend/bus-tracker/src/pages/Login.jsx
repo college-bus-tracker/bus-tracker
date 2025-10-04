@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../firebase";
@@ -11,15 +11,8 @@ export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Optional: role from query
+  // role comes from query param like ?role=student
   const role = new URLSearchParams(location.search).get("role");
-
-  useEffect(() => {
-    // If already logged in, redirect to dashboard
-    auth.onAuthStateChanged((user) => {
-      if (user) navigate("/dashboard");
-    });
-  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -29,15 +22,20 @@ export default function Login() {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const uid = userCredential.user.uid;
 
-      // Fetch user profile
-      const docRef = doc(db, role + "s", uid); // e.g., "students", "guardians"
+      // Fetch profile based on role
+      const docRef = doc(db, role + "s", uid); // "students", "guardians", "staffs"
       const docSnap = await getDoc(docRef);
+
       if (!docSnap.exists()) {
         setError("Profile not found in database.");
         return;
       }
 
-      navigate("/dashboard"); // redirect
+      // Navigate to role-based dashboard
+      if (role === "student") navigate("/student-dashboard");
+      else if (role === "guardian") navigate("/guardian-dashboard");
+      else if (role === "staff") navigate("/staff-dashboard");
+      else navigate("/dashboard"); // fallback
     } catch (err) {
       setError(err.message);
     }

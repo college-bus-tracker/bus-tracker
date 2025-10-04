@@ -17,9 +17,11 @@ export default function Register() {
     setError("");
 
     try {
+      // Create user in Firebase Auth
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const uid = userCredential.user.uid;
 
+      // Save user profile in Firestore
       await setDoc(doc(db, role + "s", uid), {
         name,
         email,
@@ -27,7 +29,12 @@ export default function Register() {
         createdAt: new Date(),
       });
 
-      navigate("/dashboard"); // redirect after signup
+      // Redirect based on role
+      if (role === "student") navigate("/student-dashboard");
+      else if (role === "guardian") navigate("/guardian-dashboard");
+      else if (role === "staff") navigate("/staff-dashboard");
+      else navigate("/dashboard"); // fallback
+
     } catch (err) {
       setError(err.message);
     }
@@ -37,6 +44,7 @@ export default function Register() {
     <div style={{ maxWidth: "400px", margin: "50px auto", textAlign: "center" }}>
       <h1>Register</h1>
       {error && <p style={{ color: "red" }}>{error}</p>}
+
       <form onSubmit={handleRegister}>
         <input
           type="text"
