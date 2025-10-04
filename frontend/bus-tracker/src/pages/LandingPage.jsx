@@ -1,3 +1,4 @@
+import React from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function LandingPage() {
@@ -14,7 +15,7 @@ export default function LandingPage() {
           onClick={() => navigate("/login?role=student")}
         >
           Student
-        </button>
+        </button>9
 
         <button
           style={{ margin: "10px", padding: "10px 20px" }}

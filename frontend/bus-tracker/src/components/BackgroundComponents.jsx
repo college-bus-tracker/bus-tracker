@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useEffect, useState } from "react";
 import { cn } from "../lib/utils";
 
@@ -45,43 +43,16 @@ export const GridBackground = ({
 
   return (
     <div
-      className={cn(
-        "relative flex h-[50rem] w-full items-center justify-center bg-transparent",
-        className
-      )}
+      className={cn("background-container grid-background", className)}
+      style={{
+        '--grid-size': gridSize + 'px',
+        '--grid-color': currentGridColor,
+        '--fade-intensity': fadeIntensity + '%',
+      }}
       {...props}
     >
-      <div
-        className="absolute inset-0"
-        style={{
-          backgroundSize: gridSize + "px " + gridSize + "px", // String concatenation
-          backgroundImage:
-            "linear-gradient(to right, " +
-            currentGridColor +
-            " 1px, transparent 1px), " +
-            "linear-gradient(to bottom, " +
-            currentGridColor +
-            " 1px, transparent 1px)", // String concatenation
-        }}
-      />
-
-      {showFade && (
-        <div
-          className="pointer-events-none absolute inset-0 flex items-center justify-center bg-white dark:bg-black"
-          style={{
-            maskImage:
-              "radial-gradient(ellipse at center, transparent " +
-              fadeIntensity +
-              "%, black)", // String concatenation
-            WebkitMaskImage:
-              "radial-gradient(ellipse at center, transparent " +
-              fadeIntensity +
-              "%, black)", // String concatenation
-          }}
-        />
-      )}
-
-      <div className="relative z-20">{children}</div>
+      {showFade && <div className="fade-overlay" />}
+      <div className="content">{children}</div>
     </div>
   );
 };
@@ -127,46 +98,17 @@ export const DotBackground = ({
 
   return (
     <div
-      className={cn(
-        "relative flex h-[50rem] w-full items-center justify-center bg-white dark:bg-black",
-        className
-      )}
+      className={cn("dot-background-container dot-background", className)}
+      style={{
+        '--dot-spacing': spacing + 'px',
+        '--dot-color': currentDotColor,
+        '--dot-size': dotSize + 'px',
+        '--fade-intensity': fadeIntensity + '%',
+      }}
       {...props}
     >
-      <div
-        className="absolute inset-0"
-        style={{
-          backgroundSize: spacing + "px " + spacing + "px", // String concatenation
-          backgroundImage:
-            "radial-gradient(" +
-            currentDotColor +
-            " " +
-            dotSize +
-            "px, transparent " +
-            dotSize +
-            "px)", // String concatenation
-        }}
-      />
-
-      {showFade && (
-        <div
-          className="pointer-events-none absolute inset-0 flex items-center justify-center bg-white dark:bg-black"
-          style={{
-            maskImage:
-              "radial-gradient(ellipse at center, transparent " +
-              fadeIntensity +
-              "%, black)", // String concatenation
-            WebkitMaskImage:
-              "radial-gradient(ellipse at center, transparent " +
-              fadeIntensity +
-              "%, black)", // String concatenation
-          }}
-        />
-      )}
-
-      <div className="relative z-20">{children}</div>
+      {showFade && <div className="fade-overlay" />}
+      <div className="content">{children}</div>
     </div>
   );
 };
-
-export default { GridBackground, DotBackground };

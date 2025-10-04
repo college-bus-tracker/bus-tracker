@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../firebase";
-import { setDoc, doc } from "firebase/firestore";
+import { setDoc, doc, serverTimestamp } from "firebase/firestore";
 
 export default function Register() {
   const [name, setName] = useState("");
@@ -26,7 +26,7 @@ export default function Register() {
         name,
         email,
         role,
-        createdAt: new Date(),
+        createdAt: serverTimestamp(),
       });
 
       // Redirect based on role
