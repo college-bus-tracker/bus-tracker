@@ -1,132 +1,25 @@
-import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth, db } from "../firebase";
-import { doc, getDoc } from "firebase/firestore";
-import { cn } from "../lib/utils";
-import "../components/Backgrounds.css";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import './backgrounds.css';
 
-// Grid Background Component
-const GridBackground = ({
-  className,
-  children,
-  gridSize = 20,
-  gridColor = "#e4e4e7",
-  darkGridColor = "#262626",
-  showFade = true,
-  fadeIntensity = 20,
-  ...props
-}) => {
-  const [currentGridColor, setCurrentGridColor] = useState(gridColor);
-
-  useEffect(() => {
-    const prefersDarkMode =
-      window.matchMedia &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const isDarkModeActive =
-      document.documentElement.classList.contains("dark") || prefersDarkMode;
-    setCurrentGridColor(isDarkModeActive ? darkGridColor : gridColor);
-
-    const observer = new MutationObserver(function (mutations) {
-      mutations.forEach(function (mutation) {
-        if (mutation.attributeName === "class") {
-          const updatedIsDarkModeActive =
-            document.documentElement.classList.contains("dark");
-          setCurrentGridColor(
-            updatedIsDarkModeActive ? darkGridColor : gridColor
-          );
-        }
-      });
-    });
-
-    observer.observe(document.documentElement, { attributes: true });
-
-    return function () {
-      return observer.disconnect();
-    };
-  }, [gridColor, darkGridColor]);
-
+const Login = () => {
   return (
-    <div
-      className={cn("background-container grid-background", className)}
-      style={{
-        '--grid-size': gridSize + 'px',
-        '--grid-color': currentGridColor,
-        '--fade-intensity': fadeIntensity + '%',
-      }}
-      {...props}
-    >
-      {showFade && <div className="fade-overlay" />}
-      <div className="content">{children}</div>
+    <div className="dot-background">
+      <div className="dot-pattern"></div>
+      <div className="fade"></div>
+      <div className="content">
+        <div className="login-container">
+          <h1>Bus Management System</h1>
+          <p>Select your role to login:</p>
+          <div className="login-buttons">
+            <Link to="/student-login" className="btn">Student Login</Link>
+            <Link to="/parent-login" className="btn">Parent Login</Link>
+            <Link to="/teacher-login" className="btn">Teacher Login</Link>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
 
-export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  // role comes from query param like ?role=student
-  const role = new URLSearchParams(location.search).get("role");
-
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setError("");
-
-    try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const uid = userCredential.user.uid;
-
-      // Fetch profile based on role
-      const docRef = doc(db, role + "s", uid); // "students", "guardians", "staffs"
-      const docSnap = await getDoc(docRef);
-
-      if (!docSnap.exists()) {
-        setError("Profile not found in database.");
-        return;
-      }
-
-      // Navigate to role-based dashboard
-      if (role === "student") navigate("/student-dashboard");
-      else if (role === "guardian") navigate("/guardian-dashboard");
-      else if (role === "staff") navigate("/staff-dashboard");
-      else navigate("/dashboard"); // fallback
-    } catch (err) {
-      setError(err.message);
-    }
-  };
-
-  return (
-    <GridBackground>
-      <div style={{ maxWidth: "400px", margin: "50px auto", textAlign: "center" }}>
-        <h1>Login {role && `as ${role}`}</h1>
-        {error && <p style={{ color: "red" }}>{error}</p>}
-
-        <form onSubmit={handleLogin}>
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            style={{ width: "100%", padding: "8px", marginBottom: "10px" }}
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            style={{ width: "100%", padding: "8px", marginBottom: "10px" }}
-          />
-          <button type="submit" style={{ padding: "10px 20px" }}>
-            Login
-          </button>
-        </form>
-      </div>
-    </GridBackground>
-  );
-}
+export default Login;
