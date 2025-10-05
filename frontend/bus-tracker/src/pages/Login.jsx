@@ -1,49 +1,91 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase';
+import '../components/Backgrounds.css'; // Import your CSS
 
 const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      navigate('/dashboard'); // Redirect to dashboard or appropriate page
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
   const backgroundStyles = {
     position: 'relative',
-    backgroundSize: '40px 40px',
-    backgroundImage: 'linear-gradient(to right, #ccc 1px, transparent 1px), linear-gradient(to bottom, #ccc 1px, transparent 1px)',
     display: 'flex',
     height: '50rem',
     width: '100%',
     alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'transparent',
-  };
-
-  const fadeStyles = {
-    pointerEvents: 'none',
-    position: 'absolute',
-    inset: 0,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'white',
-    maskImage: 'radial-gradient(ellipse at center, transparent 150px, black)',
-    WebkitMaskImage: 'radial-gradient(ellipse at center, transparent 150px, black)',
-    zIndex: 10,
+    justifyContent: 'space-between',
+    padding: '0 50px',
+    backgroundColor: '#000',
   };
 
   const contentStyles = {
     position: 'relative',
     zIndex: 20,
     color: 'black',
-    textAlign: 'center',
+    textAlign: 'right',
+    backgroundColor: 'white',
+    padding: '20px',
+    borderRadius: '10px',
+    boxShadow: '0 0 10px rgba(0,0,0,0.1)',
+    height: '90%',
+    marginLeft: 'auto',
+    width: '400px',
+  };
+
+  const busContainerStyles = {
+    width: '360px',
+    height: '245px',
+    backgroundImage: "url('1000042036.jpg')",
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
+    borderRadius: '12px',
+    boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+    border: '2px solid #f1c40f',
   };
 
   return (
-    <div style={backgroundStyles}>
-      <div style={fadeStyles}></div>
-      <div style={contentStyles}>
-        <h1>Bus Management System</h1>
-        <p>Select your role to login:</p>
-        <div className="login-buttons">
-          <Link to="/student-login" className="btn">Student Login</Link>
-          <Link to="/parent-login" className="btn">Parent Login</Link>
-          <Link to="/teacher-login" className="btn">Teacher Login</Link>
+    <div className="background-container dot-background"> {/* CSS background wrapper */}
+      <div style={backgroundStyles}>
+        <div style={busContainerStyles}></div>
+        <div style={contentStyles}>
+          <h2 style={{ textDecoration: 'underline' }}>Login</h2>
+          <form onSubmit={handleLogin}>
+            <div style={{ marginBottom: '30px' }}>
+              <label>Email:</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+            <div>
+              <label>Password:</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+            {error && <p style={{ color: 'red' }}>{error}</p>}
+            <button type="submit">Login</button>
+          </form>
+          <p>Don't have an account? <Link to="/register">Register</Link></p>
         </div>
       </div>
     </div>
@@ -51,4 +93,3 @@ const Login = () => {
 };
 
 export default Login;
- 

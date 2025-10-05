@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { auth, db } from "../firebase";
 import { signOut } from "firebase/auth";
 import { doc, getDoc, collection, getDocs, query, where } from "firebase/firestore";
+import '../components/Backgrounds.css'; // Import your CSS
 
 const StaffDashboard = () => {
   const [activeSection, setActiveSection] = useState("buses");
@@ -11,6 +12,34 @@ const StaffDashboard = () => {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+  const backgroundStyles = {
+    position: 'relative',
+    backgroundSize: '20px 20px',
+    backgroundImage: 'radial-gradient(circle, #d3d3d3 1px, transparent 1px)',
+    display: 'flex',
+    height: '50rem',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#000',
+    maskImage: 'radial-gradient(ellipse at center, black 80%, transparent 100%)',
+    WebkitMaskImage: 'radial-gradient(ellipse at center, black 80%, transparent 100%)',
+  };
+
+  const contentStyles = {
+    position: 'relative',
+    zIndex: 20,
+    color: 'black',
+    textAlign: 'center',
+    backgroundColor: 'white',
+    padding: '20px',
+    borderRadius: '10px',
+    boxShadow: '0 0 10px rgba(0,0,0,0.1)',
+    width: '80%',
+    height: '90%',
+    overflow: 'auto',
+  };
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -63,7 +92,7 @@ const StaffDashboard = () => {
       case "buses":
         return (
           <section>
-            <h1>Manage Buses</h1>
+            <h1 style={{ textDecoration: 'underline' }}>Manage Buses</h1>
             {buses.length ? (
               <ul>
                 {buses.map((bus, index) => (
@@ -80,7 +109,7 @@ const StaffDashboard = () => {
       case "students":
         return (
           <section>
-            <h1>Student List</h1>
+            <h1 style={{ textDecoration: 'underline' }}>Student List</h1>
             {students.length ? (
               <ul>
                 {students.map((student, index) => (
@@ -97,7 +126,7 @@ const StaffDashboard = () => {
       case "routes":
         return (
           <section>
-            <h1>Bus Routes</h1>
+            <h1 style={{ textDecoration: 'underline' }}>Bus Routes</h1>
             {buses.length ? (
               <ul>
                 {buses.map((bus, index) => (
@@ -119,49 +148,55 @@ const StaffDashboard = () => {
   if (loading) return <p style={{ textAlign: "center" }}>Loading dashboard...</p>;
 
   return (
-    <div className="dashboard">
-      <aside className="sidebar">
-        <h2>Staff Dashboard</h2>
-        {staff && (
-          <div className="profile">
-            <p><strong>Name:</strong> {staff.name}</p>
-            <p><strong>Email:</strong> {staff.email}</p>
-          </div>
-        )}
-        <ul>
-          <li>
-            <button
-              onClick={() => setActiveSection("buses")}
-              className={activeSection === "buses" ? "active" : ""}
-            >
-              Manage Buses
-            </button>
-          </li>
-          <li>
-            <button
-              onClick={() => setActiveSection("students")}
-              className={activeSection === "students" ? "active" : ""}
-            >
-              Student List
-            </button>
-          </li>
-          <li>
-            <button
-              onClick={() => setActiveSection("routes")}
-              className={activeSection === "routes" ? "active" : ""}
-            >
-              Routes
-            </button>
-          </li>
-          <li>
-            <button onClick={handleLogout} className="logout-btn">
-              Logout
-            </button>
-          </li>
-        </ul>
-      </aside>
+    <div className="background-container dot-background">
+      <div style={backgroundStyles}>
+        <div style={contentStyles}>
+          <div className="dashboard">
+            <aside className="sidebar">
+              <h2 style={{ textDecoration: 'underline' }}>Staff Dashboard</h2>
+              {staff && (
+                <div className="profile">
+                  <p><strong>Name:</strong> {staff.name}</p>
+                  <p><strong>Email:</strong> {staff.email}</p>
+                </div>
+              )}
+              <ul>
+                <li>
+                  <button
+                    onClick={() => setActiveSection("buses")}
+                    className={activeSection === "buses" ? "active" : ""}
+                  >
+                    Manage Buses
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => setActiveSection("students")}
+                    className={activeSection === "students" ? "active" : ""}
+                  >
+                    Student List
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => setActiveSection("routes")}
+                    className={activeSection === "routes" ? "active" : ""}
+                  >
+                    Routes
+                  </button>
+                </li>
+                <li>
+                  <button onClick={handleLogout} className="logout-btn">
+                    Logout
+                  </button>
+                </li>
+              </ul>
+            </aside>
 
-      <main className="main-content">{renderSection()}</main>
+            <main className="main-content">{renderSection()}</main>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

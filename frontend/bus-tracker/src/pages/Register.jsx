@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../firebase";
 import { setDoc, doc, serverTimestamp } from "firebase/firestore";
+import '../components/Backgrounds.css'; // Import your CSS
 
 export default function Register() {
   const [name, setName] = useState("");
@@ -11,6 +12,32 @@ export default function Register() {
   const [role, setRole] = useState("student");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+
+  const backgroundStyles = {
+    position: 'relative',
+    backgroundSize: '20px 20px',
+    backgroundImage: 'radial-gradient(circle, #d3d3d3 1px, transparent 1px)',
+    display: 'flex',
+    height: '50rem',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#000',
+    maskImage: 'radial-gradient(ellipse at center, black 80%, transparent 100%)',
+    WebkitMaskImage: 'radial-gradient(ellipse at center, black 80%, transparent 100%)',
+  };
+
+  const contentStyles = {
+    position: 'relative',
+    zIndex: 20,
+    color: 'black',
+    textAlign: 'center',
+    backgroundColor: 'white',
+    padding: '20px',
+    borderRadius: '10px',
+    boxShadow: '0 0 10px rgba(0,0,0,0.1)',
+    height: '90%',
+  };
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -41,48 +68,54 @@ export default function Register() {
   };
 
   return (
-    <div style={{ maxWidth: "400px", margin: "50px auto", textAlign: "center" }}>
-      <h1>Register</h1>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+    <div className="background-container dot-background">
+      <div style={backgroundStyles}>
+        <div style={contentStyles}>
+          <div style={{ maxWidth: "400px", margin: "50px auto", textAlign: "center" }}>
+            <h1 style={{ textDecoration: 'underline' }}>Register</h1>
+            {error && <p style={{ color: "red" }}>{error}</p>}
 
-      <form onSubmit={handleRegister}>
-        <input
-          type="text"
-          placeholder="Full Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-          style={{ width: "100%", padding: "8px", marginBottom: "10px" }}
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          style={{ width: "100%", padding: "8px", marginBottom: "10px" }}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          style={{ width: "100%", padding: "8px", marginBottom: "10px" }}
-        />
-        <select
-          value={role}
-          onChange={(e) => setRole(e.target.value)}
-          style={{ width: "100%", padding: "8px", marginBottom: "10px" }}
-        >
-          <option value="student">Student</option>
-          <option value="guardian">Guardian</option>
-          <option value="staff">Staff</option>
-        </select>
-        <button type="submit" style={{ padding: "10px 20px" }}>
-          Register
-        </button>
-      </form>
+            <form onSubmit={handleRegister}>
+              <input
+                type="text"
+                placeholder="Full Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                style={{ width: "100%", padding: "8px", marginBottom: "10px" }}
+              />
+              <input
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                style={{ width: "100%", padding: "8px", marginBottom: "10px" }}
+              />
+              <input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                style={{ width: "100%", padding: "8px", marginBottom: "10px" }}
+              />
+              <select
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                style={{ width: "100%", padding: "8px", marginBottom: "10px" }}
+              >
+                <option value="student">Student</option>
+                <option value="guardian">Guardian</option>
+                <option value="staff">Staff</option>
+              </select>
+              <button type="submit" style={{ padding: "10px 20px" }}>
+                Register
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
