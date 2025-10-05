@@ -4,7 +4,7 @@
   --dot-spacing: 30px;
   --dot-color: #666;
   --dot-size: 4px;
-  --fade-intensity: 150px;
+  --fade-intensity: 0px;
 }
 
 /* Grid Background Styles */
@@ -31,9 +31,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: white;
-  mask-image: radial-gradient(ellipse at center, transparent var(--fade-intensity), black);
-  -webkit-mask-image: radial-gradient(ellipse at center, transparent var(--fade-intensity), black);
+  background-color: rgb(0, 0, 0);
+  mask-image: none;
+  -webkit-mask-image: none;
   z-index: 10;
 }
 

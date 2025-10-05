@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
 import '../components/Backgrounds.css'; // Import your CSS
+import image from '../images/generated-image.png';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -26,8 +27,7 @@ const Login = () => {
     height: '50rem',
     width: '100%',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: '0 50px',
+    justifyContent: 'center',
     backgroundColor: '#000',
   };
 
@@ -45,22 +45,10 @@ const Login = () => {
     width: '400px',
   };
 
-  const busContainerStyles = {
-    width: '360px',
-    height: '245px',
-    backgroundImage: "url('1000042036.jpg')",
-    backgroundSize: 'cover',
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center',
-    borderRadius: '12px',
-    boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
-    border: '2px solid #f1c40f',
-  };
-
   return (
     <div className="background-container dot-background"> {/* CSS background wrapper */}
       <div style={backgroundStyles}>
-        <div style={busContainerStyles}></div>
+        <img src={image} alt="Bus" style={{ marginRight: '20px', height: '90%', width: 'auto' }} />
         <div style={contentStyles}>
           <h2 style={{ textDecoration: 'underline' }}>Login</h2>
           <form onSubmit={handleLogin}>
